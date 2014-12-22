@@ -20,11 +20,9 @@ Running
 
 Once you have made the correct modifications (which could take some time if you are scraping from a different website for your area) then run the following from your terminal (assuming you have the above requirements).
 
-{% highlight Python %}
-
+```Python
 python spotifylocalbands.py
-
-{% endhighlight %}
+```
 
 Notes
 =====
