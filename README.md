@@ -15,6 +15,13 @@ Requirements
 * libspotify (https://developer.spotify.com/technologies/libspotify/)
 * pyspotify 2.x (https://github.com/mopidy/pyspotify)
 
+Running
+======
+
+Once you have made the correct modifications (which could take some time if you are scraping from a different website for your area) then run the following from your terminal (assuming you have the above requirements).
+
+>> python spotifylocalbands.py
+
 Notes
 =====
 * Place spotify_appkey.key in the same directory as this file
