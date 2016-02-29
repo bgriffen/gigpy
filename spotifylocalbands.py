@@ -4,6 +4,7 @@ import spotify
 import sys
 import threading
 import numpy as np
+
 """
 Contact: Brendan Griffen brendan.f.griffen@gmail.com @brendangriffen
 
