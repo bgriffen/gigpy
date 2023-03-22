@@ -39,3 +39,5 @@ platforms, however.
 Listen In
 =========
 You can access the [Brisbane playlist here](https://open.spotify.com/playlist/3PjTtXAvsLe3C59USzfkni?si=54a5eb05b5d84d99)!
+
+ ![Spotify Playlist](spotify_playlist.png)
