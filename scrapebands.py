@@ -6,7 +6,12 @@ import requests
 from datetime import datetime
 from datetime import datetime,timedelta
 
-def generate_urls_for_next_nweeks(num_weeks):
+cityid = {'Brisbane':2174003,
+          'Melbourne':2158177,
+          'Sydney':2147714,
+          'Adelaide':2078025}
+
+def generate_urls_for_next_nweeks(city,num_weeks):
     """
     To get around BandsInTown display, break into n_week blocks and concat.
     """
@@ -16,11 +21,12 @@ def generate_urls_for_next_nweeks(num_weeks):
     while nthblock < num_weeks:
         current_block = current_date.date().isoformat()
         Updated_date = current_date+ timedelta(weeks=1)
-        later = Updated_date.date().isoformat()
+        laterdate = Updated_date.date().isoformat()
         #return Updated_date.date().isoformat()
-        listi = ["https://www.bandsintown.com/?date=",
-                current_block,
-                "T14%3A00%3A00%2C",later,
+        listi = ["https://www.bandsintown.com/",
+                "?city_id=","%s"%cityid[city],
+                "&date=",current_block,
+                "T14%3A00%3A00%2C",laterdate,
                 "T23%3A59%3A59&date_filter=This+Week"]
         lists.append("".join(listi))
         current_date = Updated_date
@@ -76,12 +82,11 @@ def parse_band(band):
     info['num_interested'] = search_item[5].text
     return info
 
-def get_bands(num_weeks):
+def get_bands(city,num_weeks):
     """
     Iterate through the bands and update.
     """
-    urls = generate_urls_for_next_nweeks(num_weeks=num_weeks)
-
+    urls = generate_urls_for_next_nweeks(city=city,num_weeks=num_weeks)
     header = {
       "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.75 Safari/537.36",
       "X-Requested-With": "XMLHttpRequest"
