@@ -7,6 +7,9 @@ from datetime import datetime
 from datetime import datetime,timedelta
 
 def generate_urls_for_next_nweeks(num_weeks):
+    """
+    To get around BandsInTown display, break into n_week blocks and concat.
+    """
     current_date = datetime.now()
     nthblock = 0
     lists  = []
@@ -61,6 +64,10 @@ def find_by_text(soup, text, tag, **kwargs):
     #    return matches[0]
 
 def parse_band(band):
+    """
+    Get the band info from the soup.
+    """
+
     search_item = band.find_all("div")[2].find_all("div")
     info = {}
     info['band_name'] = search_item[1].text
@@ -70,6 +77,9 @@ def parse_band(band):
     return info
 
 def get_bands(num_weeks):
+    """
+    Iterate through the bands and update.
+    """
     urls = generate_urls_for_next_nweeks(num_weeks=num_weeks)
 
     header = {
