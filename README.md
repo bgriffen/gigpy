@@ -1,4 +1,4 @@
-Spotify Local Bands
+🎵 Spotify Local Bands
 =================
 
 About
