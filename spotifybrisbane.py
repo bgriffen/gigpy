@@ -33,6 +33,7 @@ sp = spotipy.Spotify(auth_manager=SpotifyOAuth(client_id=os.environ['SPOTIFY_CLI
                                                scope=scope))
 
 # get bands in the coming 3 months weeks
+print("Getting upcoming bands..")
 dfbands = scrapebands.get_bands(num_weeks=12)
 all_bands = list(dfbands['band_name'].str.title())
 
@@ -69,10 +70,11 @@ for band in all_bands:
     # remove duplicates
     current_tracks = sp.user_playlist(os.environ['SPOTIFY_USER_ID'], playlist_id=os.environ['SPOTIFY_CLIENT_PLAYLISTID'])['tracks']
     track_list = [item['track']['uri'] for item in current_tracks['items']]
-    duplicate_tracks = set([x for x in track_list if track_list.count(x) > 1])
-    sp.user_playlist_remove_all_occurrences_of_tracks(os.environ['SPOTIFY_USER_ID'],
+    duplicate_tracks = list(set([x for x in track_list if track_list.count(x) > 1]))
+    if duplicate_tracks:
+        sp.user_playlist_remove_all_occurrences_of_tracks(os.environ['SPOTIFY_USER_ID'],
                                                       playlist_id=os.environ['SPOTIFY_CLIENT_PLAYLISTID'],
                                                       tracks=duplicate_tracks)
 
-    # add them back singularly
-    sp.user_playlist_add_tracks(os.environ['SPOTIFY_USER_ID'], playlist_id=os.environ['SPOTIFY_CLIENT_PLAYLISTID'], tracks=duplicate_tracks)
+        # add them back singularly
+        sp.user_playlist_add_tracks(os.environ['SPOTIFY_USER_ID'], playlist_id=os.environ['SPOTIFY_CLIENT_PLAYLISTID'], tracks=duplicate_tracks)
