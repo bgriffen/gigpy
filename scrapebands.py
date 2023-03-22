@@ -15,7 +15,10 @@ def generate_urls_for_next_nweeks(num_weeks):
         Updated_date = current_date+ timedelta(weeks=1)
         later = Updated_date.date().isoformat()
         #return Updated_date.date().isoformat()
-        listi = ["https://www.bandsintown.com/?date=",current_block,"T14%3A00%3A00%2C",later,"T23%3A59%3A59&date_filter=This+Month"]
+        listi = ["https://www.bandsintown.com/?date=",
+                current_block,
+                "T14%3A00%3A00%2C",later,
+                "T23%3A59%3A59&date_filter=This+Week"]
         lists.append("".join(listi))
         current_date = Updated_date
         nthblock +=1
