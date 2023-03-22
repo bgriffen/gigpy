@@ -20,7 +20,6 @@ Enjoy the tunes!
 
 """
 
-
 logged_in_event = threading.Event()
 
 def connection_state_listener(session):
