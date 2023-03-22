@@ -6,10 +6,6 @@ About
 
 Code to find upcoming bands playing locally and convert their songs into a Spotify playlist. This uses BandsInTown which you can see inside `scrapebands.py`.
 
-Author
-======
-Created by Brendan Griffen on 12/22/2014
-
 Requirements
 ============
 * Spotify
