@@ -14,9 +14,9 @@ Requirements
 Also set these environment variables in your `~/.bashrc` or whichever you're using. You can get these from Spotfiy [here](https://developer.spotify.com/dashboard/applications) but you also need to click "Edit Settings" for your app and add the redirect uri below:
 
 ```bash
-export SPOTIPY_CLIENT_ID='SPOTIPY_CLIENT_ID'
-export SPOTIPY_CLIENT_SECRET='SPOTIPY_CLIENT_SECRET'
-export SPOTIPY_REDIRECT_URI='http://localhost:8899/callback'
+export SPOTIFY_CLIENT_ID='SPOTIPY_CLIENT_ID'
+export SPOTIFY_CLIENT_SECRET='SPOTIPY_CLIENT_SECRET'
+export SPOTIFY_REDIRECT_URI='http://localhost:8899/callback'
 export SPOTIFY_CLIENT_PLAYLISTID='SPOTIFY_CLIENT_PLAYLISTID'
 export SPOTIFY_CLIENT_ID='SPOTIFY_CLIENT_ID'
 ```

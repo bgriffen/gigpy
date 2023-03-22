@@ -15,7 +15,7 @@ Code will scrape bands playing in next few months in Boston area.
 Requirements:
 
 spotipy:        https://spotipy.readthedocs.io/en/2.22.1/?highlight=playlist#
-developer key:  https://devaccount.spotify.com/my-account/keys/
+developer key:  https://developer.spotify.com/dashboard/applications
 
 Enjoy the tunes!
 
@@ -27,9 +27,10 @@ import os
 
 scope = "playlist-modify-public"
 
-sp = spotipy.Spotify(auth_manager=SpotifyOAuth(client_id=os.environ['SPOTIPY_CLIENT_ID'],
-                                                client_secret=os.environ['SPOTIPY_CLIENT_SECRET'],
-                                                redirect_uri=os.environ['SPOTIPY_REDIRECT_URI'],scope=scope))
+sp = spotipy.Spotify(auth_manager=SpotifyOAuth(client_id=os.environ['SPOTIFY_CLIENT_ID'],
+                                               client_secret=os.environ['SPOTIFY_CLIENT_SECRET'],
+                                               redirect_uri=os.environ['SPOTIFY_REDIRECT_URI'],
+                                               scope=scope))
 
 # get bands in the coming 3 months weeks
 dfbands = scrapebands.get_bands(num_weeks=12)
