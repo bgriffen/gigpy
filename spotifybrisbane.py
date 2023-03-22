@@ -5,7 +5,7 @@ import sys
 import threading
 import numpy as np
 import scrapebands
-
+import collections
 
 """
 Contact: Brendan Griffen brendan.f.griffen@gmail.com @brendangriffen
@@ -34,16 +34,16 @@ sp = spotipy.Spotify(auth_manager=SpotifyOAuth(client_id=os.environ['SPOTIFY_CLI
 
 # get bands in the coming 3 months weeks
 dfbands = scrapebands.get_bands(num_weeks=12)
-all_bands = list(set(dfbands['band_name'].str.title()))
+all_bands = list(dfbands['band_name'].str.title())
 
 print("Here is the dataframe of bands to be added...")
 print(dfbands)
 
 print("Clearing current tracks...")
-current_tracks = sp.user_playlist(os.environ['SPOTIFY_CLIENT_ID'], playlist_id=os.environ['SPOTIFY_CLIENT_PLAYLISTID'])['tracks']
+current_tracks = sp.user_playlist(os.environ['SPOTIFY_USER_ID'], playlist_id=os.environ['SPOTIFY_CLIENT_PLAYLISTID'])['tracks']
 remove_tracks = [item['track']['uri'] for item in current_tracks['items']]
 if remove_tracks:
-    sp.user_playlist_remove_all_occurrences_of_tracks(os.environ['SPOTIFY_CLIENT_ID'],
+    sp.user_playlist_remove_all_occurrences_of_tracks(os.environ['SPOTIFY_USER_ID'],
                                                   playlist_id=os.environ['SPOTIFY_CLIENT_PLAYLISTID'],
                                                   tracks=remove_tracks)
 
@@ -64,4 +64,15 @@ for band in all_bands:
             print("> Skipping - no tracks!")
             continue
 
-    sp.user_playlist_add_tracks(os.environ['SPOTIFY_CLIENT_ID'], playlist_id=os.environ['SPOTIFY_CLIENT_PLAYLISTID'], tracks=add_tracks)
+    sp.user_playlist_add_tracks(os.environ['SPOTIFY_USER_ID'], playlist_id=os.environ['SPOTIFY_CLIENT_PLAYLISTID'], tracks=add_tracks)
+
+    # remove duplicates
+    current_tracks = sp.user_playlist(os.environ['SPOTIFY_USER_ID'], playlist_id=os.environ['SPOTIFY_CLIENT_PLAYLISTID'])['tracks']
+    track_list = [item['track']['uri'] for item in current_tracks['items']]
+    duplicate_tracks = set([x for x in track_list if track_list.count(x) > 1])
+    sp.user_playlist_remove_all_occurrences_of_tracks(os.environ['SPOTIFY_USER_ID'],
+                                                      playlist_id=os.environ['SPOTIFY_CLIENT_PLAYLISTID'],
+                                                      tracks=duplicate_tracks)
+
+    # add them back singularly
+    sp.user_playlist_add_tracks(os.environ['SPOTIFY_USER_ID'], playlist_id=os.environ['SPOTIFY_CLIENT_PLAYLISTID'], tracks=duplicate_tracks)
