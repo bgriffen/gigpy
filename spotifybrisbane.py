@@ -91,5 +91,4 @@ def cleanup():
 
 for band in all_bands:
     add_playlists_for_band(band)
-
-cleanup()
+#cleanup()
