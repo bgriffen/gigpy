@@ -11,9 +11,18 @@ Created by Brendan Griffen on 12/22/2014
 
 Requirements
 ============
-* Spotify Premium subscription
-* libspotify (https://developer.spotify.com/technologies/libspotify/)
-* pyspotify 2.x (https://github.com/mopidy/pyspotify)
+* Spotify
+* spotipy (https://spotipy.readthedocs.io/en/2.22.1/)
+
+Also set these environment variables in your `~/.bashrc` or whichever you're using. You can get these from Spotfiy [here](https://developer.spotify.com/dashboard/applications) but you also need to click "Edit Settings" for your app and add the redirect uri below:
+
+```bash
+export SPOTIPY_CLIENT_ID='SPOTIPY_CLIENT_ID'
+export SPOTIPY_CLIENT_SECRET='SPOTIPY_CLIENT_SECRET'
+export SPOTIPY_REDIRECT_URI='http://localhost:8899/callback'
+export SPOTIFY_CLIENT_PLAYLISTID='SPOTIFY_CLIENT_PLAYLISTID'
+export SPOTIFY_CLIENT_ID='SPOTIFY_CLIENT_ID'
+```
 
 Running
 ======
@@ -21,14 +30,10 @@ Running
 Once you have made the correct modifications (which could take some time if you are scraping from a different website for your area) then run the following from your terminal (assuming you have the above requirements).
 
 ```Python
-python spotifylocalbands.py
+python spotifybrisbane.py
 ```
-
-Notes
-=====
-* Place spotify_appkey.key in the same directory as this file
 
 Tested On
 =========
-Tested on Mac OS X 10.10.1 Yosemite with Python 2.7.8. This should work on other
+Tested on Mac OS X 13.2.1 Ventura with Python 3.8. This should work on other
 platforms, however.
