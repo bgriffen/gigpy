@@ -24,11 +24,13 @@ export SPOTIFY_USER_ID='SPOTIFY_USER_ID'
 Running
 ======
 
-Once you have made the correct modifications (which could take some time if you are scraping from a different website for your area) then run the following from your terminal (assuming you have the above requirements).
+Once you have made the correct modifications, in `getlocalbands.py` and added those environment variables, you can just run:
 
 ```Python
-python spotifybrisbane.py
+python getlocalbands.py
 ```
+
+Ideally you run this in concept, not in actuality as it just duplicates what is already available. =)
 
 Tested On
 =========
