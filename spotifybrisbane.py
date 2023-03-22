@@ -43,38 +43,53 @@ print(dfbands)
 print("Clearing current tracks...")
 current_tracks = sp.user_playlist(os.environ['SPOTIFY_USER_ID'], playlist_id=os.environ['SPOTIFY_CLIENT_PLAYLISTID'])['tracks']
 remove_tracks = [item['track']['uri'] for item in current_tracks['items']]
-if remove_tracks:
-    sp.user_playlist_remove_all_occurrences_of_tracks(os.environ['SPOTIFY_USER_ID'],
-                                                  playlist_id=os.environ['SPOTIFY_CLIENT_PLAYLISTID'],
-                                                  tracks=remove_tracks)
+while len(remove_tracks)>0:
+    current_tracks = sp.user_playlist(os.environ['SPOTIFY_USER_ID'], playlist_id=os.environ['SPOTIFY_CLIENT_PLAYLISTID'])['tracks']
+    remove_tracks = [item['track']['uri'] for item in current_tracks['items']]
+    if len(remove_tracks)>0:
+        sp.user_playlist_remove_all_occurrences_of_tracks(os.environ['SPOTIFY_USER_ID'],
+                                                      playlist_id=os.environ['SPOTIFY_CLIENT_PLAYLISTID'],
+                                                      tracks=remove_tracks)
 
-for band in all_bands:
+def add_playlists_for_band(band):
+    print("Trying",band)
     results = sp.search(q='artist:' + band, type='artist')
     artist = results['artists']['items']
 
     # if there are artists proceed...
-    if len(artist) > 0:
-        lz_uri = artist[0]['uri']
+    if len(artist) == 0:
+        print("> Skipping - not found!")
+        return
 
-    print("Adding",band)
+    # take first artist found
+    lz_uri = artist[0]['uri']
+
     # just get top 2 tracks if available
     top_tracks = sp.artist_top_tracks(lz_uri)['tracks'][:2]
     add_tracks = [track['uri'] for track in top_tracks]
+    add_tracks_names = [track['name'] for track in top_tracks]
+
     # add those to playlist
     if len(add_tracks) == 0:
-            print("> Skipping - no tracks!")
-            continue
+        print("> Skipping - no tracks!")
+        return
+    else:
+        print("      >",add_tracks_names)
+        sp.user_playlist_add_tracks(os.environ['SPOTIFY_USER_ID'], playlist_id=os.environ['SPOTIFY_CLIENT_PLAYLISTID'], tracks=add_tracks)
 
-    sp.user_playlist_add_tracks(os.environ['SPOTIFY_USER_ID'], playlist_id=os.environ['SPOTIFY_CLIENT_PLAYLISTID'], tracks=add_tracks)
-
+def cleanup():
     # remove duplicates
     current_tracks = sp.user_playlist(os.environ['SPOTIFY_USER_ID'], playlist_id=os.environ['SPOTIFY_CLIENT_PLAYLISTID'])['tracks']
     track_list = [item['track']['uri'] for item in current_tracks['items']]
     duplicate_tracks = list(set([x for x in track_list if track_list.count(x) > 1]))
-    if duplicate_tracks:
+    if len(duplicate_tracks)>0:
         sp.user_playlist_remove_all_occurrences_of_tracks(os.environ['SPOTIFY_USER_ID'],
                                                       playlist_id=os.environ['SPOTIFY_CLIENT_PLAYLISTID'],
                                                       tracks=duplicate_tracks)
-
         # add them back singularly
         sp.user_playlist_add_tracks(os.environ['SPOTIFY_USER_ID'], playlist_id=os.environ['SPOTIFY_CLIENT_PLAYLISTID'], tracks=duplicate_tracks)
+
+for band in all_bands:
+    add_playlists_for_band(band)
+
+cleanup()
