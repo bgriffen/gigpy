@@ -6,6 +6,7 @@ import requests
 from datetime import datetime
 from datetime import datetime,timedelta
 
+# BandzInTown IDs
 cityid = {'Brisbane':2174003,
           'Melbourne':2158177,
           'Sydney':2147714,
@@ -14,6 +15,8 @@ cityid = {'Brisbane':2174003,
 def generate_urls_for_next_nweeks(city,num_weeks):
     """
     To get around BandsInTown display, break into n_week blocks and concat.
+    Definitely hacky.
+
     """
     current_date = datetime.now()
     nthblock = 0
@@ -95,6 +98,8 @@ def get_bands(city,num_weeks):
     for urli in urls:
         r = requests.get(urli, headers=header)
         soup = BeautifulSoup(r.text,features="lxml")
+
+        # note this app only finds evening gigs! (the majority)
         bands = find_by_text(soup," PM","a")
         bandinfo = []
         for band in bands:
