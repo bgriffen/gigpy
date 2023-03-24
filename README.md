@@ -1,8 +1,5 @@
-🎵🇦🇺 GigPy - Live Music Near Me
+🇦🇺🎵 GigPy - Live Music Near Me
 =================
-
-Just Give Me The Playlists
-=========
 
 Click on any of the following:
 
