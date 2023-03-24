@@ -10,7 +10,7 @@ import collections
 """
 Contact: Brendan Griffen brendan.f.griffen@gmail.com @brendangriffen
 
-Code will scrape bands playing in next few months in Boston area.
+Code will scrape bands playing in next few months in various cities.
 
 Requirements:
 
@@ -33,10 +33,10 @@ sp = spotipy.Spotify(auth_manager=SpotifyOAuth(client_id=os.environ['SPOTIFY_CLI
                                                scope=scope))
 
 playlist_cities = {}
-playlist_cities["Adelaide"] = 'plistid'
-playlist_cities['Melbourne'] = 'plistid'
-playlist_cities['Brisbane'] = 'plistid'
-playlist_cities['Sydney'] = 'plistid'
+playlist_cities["Adelaide"] = '5FsF0m0y3J8DT9t5APliQH'
+playlist_cities['Melbourne'] = '4ctDUQ505YnGNoj21yYpxI'
+playlist_cities['Brisbane'] = '3PjTtXAvsLe3C59USzfkni'
+playlist_cities['Sydney'] = '1Shh4ljWPQrcsvpTKtppm5'
 
 #playlists = sp.user_playlists(os.environ['SPOTIFY_USER_ID'])
 #for item in playlists['items']:
