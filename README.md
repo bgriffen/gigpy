@@ -1,22 +1,10 @@
-🎵 Local Live Music
+🎵🇦🇺 GigPy - Live Music Near Me
 =================
-
 
 Just Give Me The Playlists
 =========
 
 Click on any of the following:
-
-
-About
-=====
-
-I wanted a way to get more live music outside of The AlgorithmTM echo chamber. This is the result.
-
-This code updates playlists in Spotify based on upcoming music found in your local area.
-The data source is [Bands In Town](https://www.bandsintown.com/). It should capture most bands, but maybe not all. If there is ambiguity over a band name for instance, it may mistakenly put the wrong band in the playlist -- sorry about that.
-
-It should be rare and so the overwhelming majority are bands playing LIVE near you soon. Enjoy =)
 
 <table>
   <tr>
@@ -29,6 +17,15 @@ It should be rare and so the overwhelming majority are bands playing LIVE near y
   </tr>
 </table>
 
+About
+=====
+
+I wanted a way to get more live music outside of The AlgorithmTM echo chamber. This is the result.
+
+This code updates playlists in Spotify based on upcoming music found in your local area.
+The data source is [Bands In Town](https://www.bandsintown.com/). It should capture most bands, but maybe not all. If there is ambiguity over a band name for instance, it may mistakenly put the wrong band in the playlist -- sorry about that.
+
+It should be rare and so the overwhelming majority are bands playing LIVE near you soon. Enjoy =)
 
 Requirements
 ============
