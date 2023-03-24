@@ -32,11 +32,13 @@ sp = spotipy.Spotify(auth_manager=SpotifyOAuth(client_id=os.environ['SPOTIFY_CLI
                                                redirect_uri=os.environ['SPOTIFY_REDIRECT_URI'],
                                                scope=scope))
 
+# EDIT YOUR PLAYLIST IDS BELOW
+
 playlist_cities = {}
-playlist_cities["Adelaide"] = '5FsF0m0y3J8DT9t5APliQH'
-playlist_cities['Melbourne'] = '4ctDUQ505YnGNoj21yYpxI'
-playlist_cities['Brisbane'] = '3PjTtXAvsLe3C59USzfkni'
-playlist_cities['Sydney'] = '1Shh4ljWPQrcsvpTKtppm5'
+playlist_cities["Adelaide"] = 'playlist_id'
+playlist_cities['Melbourne'] = 'playlist_id'
+playlist_cities['Brisbane'] = 'playlist_id'
+playlist_cities['Sydney'] = 'playlist_id'
 
 #playlists = sp.user_playlists(os.environ['SPOTIFY_USER_ID'])
 #for item in playlists['items']:
