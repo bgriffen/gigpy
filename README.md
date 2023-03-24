@@ -5,12 +5,12 @@ Click on any of the following:
 
 <table>
   <tr>
-    <td><a href="https://open.spotify.com/playlist/3PjTtXAvsLe3C59USzfkni?si=54a5eb05b5d84d99"><img src="playlist_brisbane.png" style="width:100%"></a></td>
-    <td><a href="https://open.spotify.com/playlist/4ctDUQ505YnGNoj21yYpxI?si=54a5eb05b5d84d99"><img src="playlist_melbourne.png" style="width:100%"></a></td>
+    <td><a href="https://open.spotify.com/playlist/3PjTtXAvsLe3C59USzfkni?si=54a5eb05b5d84d99"><img src="screenshots/playlist_brisbane.png" style="width:100%"></a></td>
+    <td><a href="https://open.spotify.com/playlist/4ctDUQ505YnGNoj21yYpxI?si=54a5eb05b5d84d99"><img src="screenshots/playlist_melbourne.png" style="width:100%"></a></td>
   </tr>
   <tr>
-    <td><a href="https://open.spotify.com/playlist/1Shh4ljWPQrcsvpTKtppm5?si=54a5eb05b5d84d99"><img src="playlist_sydney.png" style="width:100%"></a></td>
-    <td><a href="https://open.spotify.com/playlist/5FsF0m0y3J8DT9t5APliQH?si=54a5eb05b5d84d99"><img src="playlist_adelaide.png" style="width:100%"></a></td>
+    <td><a href="https://open.spotify.com/playlist/1Shh4ljWPQrcsvpTKtppm5?si=54a5eb05b5d84d99"><img src="screenshots/playlist_sydney.png" style="width:100%"></a></td>
+    <td><a href="https://open.spotify.com/playlist/5FsF0m0y3J8DT9t5APliQH?si=54a5eb05b5d84d99"><img src="screenshots/playlist_adelaide.png" style="width:100%"></a></td>
   </tr>
 </table>
 
