@@ -63,8 +63,6 @@ gigpy.generate_playlists_for_city("Brisbane")
 
 Ideally you run this in concept, not in actuality as it just duplicates what is already available. =)
 
-Tested On
-=========
 Tested on Mac OS X 13.2.1 Ventura with Python 3.8. This should work on other
 platforms, however.
 
