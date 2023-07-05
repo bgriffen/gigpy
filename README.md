@@ -23,12 +23,23 @@ It should be rare and so the overwhelming majority are bands playing LIVE near y
 
 Enjoy =)
 
-Requirements
+Installation
 ============
-* Spotify
-* [spotipy](https://spotipy.readthedocs.io/en/2.22.1/)
 
-Also set these environment variables in your `~/.bashrc` or whichever you're using. You can get these from Spotfiy [here](https://developer.spotify.com/dashboard/applications) but you also need to click "Edit Settings" for your app and add the redirect uri below:
+Clone the repository:
+
+```bash
+git clone https://github.com/bgriffen/bandscraper.git
+```
+
+Change directory into the cloned repository:
+
+```bash
+cd gigpy
+pip install -r requirements.txt
+```
+
+Also set these environment variables in your `~/.bashrc` or whichever you're using. You can [get these from Spotify](https://developer.spotify.com/dashboard/applications) but you also need to click "Edit Settings" for your app and add the redirect uri below:
 
 ```bash
 export SPOTIFY_CLIENT_ID='SPOTIPY_CLIENT_ID'
