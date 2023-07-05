@@ -41,7 +41,7 @@ export SPOTIFY_CLIENT_PLAYLISTID='SPOTIFY_CLIENT_PLAYLISTID'
 export SPOTIFY_USER_ID='SPOTIFY_USER_ID'
 ```
 
-Running
+Getting Started
 ======
 
 Once you have made the correct modifications, in `getlocalbands.py` and added those environment variables, you need to ensure your cities are in the `cities.yaml` file. You can obtain the city ID by going to [bandsintown.com](https://www.bandsintown.com/this-week/genre/all-genres) and checking the URL for the the `city_id=2158177` tag.
