@@ -6,8 +6,9 @@ import requests
 from datetime import datetime
 from datetime import datetime,timedelta
 from . import helper
+import logging
 
-def generate_urls_for_next_nweeks(city, num_weeks):
+def generate_urls_for_next_period(city, num_weeks):
     """
     Generate URLs for the upcoming n weeks to scrape BandsInTown data.
 
@@ -94,7 +95,7 @@ def get_bands(city, num_weeks):
     :return: A Pandas DataFrame containing the scraped data for each band
     """
 
-    urls = generate_urls_for_next_nweeks(city=city,num_weeks=num_weeks)
+    urls = generate_urls_for_next_period(city=city,num_weeks=num_weeks)
     header = {
       "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.75 Safari/537.36",
       "X-Requested-With": "XMLHttpRequest"
@@ -103,7 +104,6 @@ def get_bands(city, num_weeks):
     for urli in urls:
         r = requests.get(urli, headers=header)
         soup = BeautifulSoup(r.text,features="lxml")
-        logging.info(urli)
         bands = find_by_text(soup," PM","a")
         bandinfo = [parse_band(band) for band in bands]
         dfis.append(pd.DataFrame(bandinfo))
