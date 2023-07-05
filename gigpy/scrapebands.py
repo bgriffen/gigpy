@@ -23,11 +23,12 @@ def generate_urls_for_next_nweeks(city,num_weeks):
     lists  = []
     while nthblock < num_weeks:
         current_block = current_date.date().isoformat()
-        Updated_date = current_date+ timedelta(weeks=1)
+        Updated_date = current_date+ timedelta(days=2)
         laterdate = Updated_date.date().isoformat()
-        #return Updated_date.date().isoformat()
-        listi = ["https://www.bandsintown.com/",
+
+        listi = ["https://www.bandsintown.com/choose-dates/genre/all-genres",
                 "?city_id=","%s"%cityid[city],
+                "&date_filter=This+Week&calendarTrigger=false",
                 "&date=",current_block,
                 "T14%3A00%3A00%2C",laterdate,
                 "T23%3A59%3A59&date_filter=This+Week"]
@@ -76,7 +77,7 @@ def parse_band(band):
     """
     Get the band info from the soup.
     """
-
+    #print(band)
     search_item = band.find_all("div")[2].find_all("div")
     info = {}
     info['band_name'] = search_item[1].text
@@ -98,10 +99,11 @@ def get_bands(city,num_weeks):
     for urli in urls:
         r = requests.get(urli, headers=header)
         soup = BeautifulSoup(r.text,features="lxml")
-
+        print(urli)
         # note this app only finds evening gigs! (the majority)
         bands = find_by_text(soup," PM","a")
         bandinfo = []
+        #print(bands)
         for band in bands:
             bandinfo.append(parse_band(band))
         dfi = pd.DataFrame(bandinfo)
