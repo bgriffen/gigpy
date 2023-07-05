@@ -3,9 +3,12 @@ import bs4
 import spotipy
 import os
 import logging
-import scrapebands
+import tools
 import collections
 from spotipy.oauth2 import SpotifyOAuth
+import yaml
+import logging
+import helper
 
 """
 Contact: Brendan Griffen brendan.f.griffen@gmail.com @brendangriffen
@@ -28,10 +31,9 @@ sp = spotipy.Spotify(auth_manager=SpotifyOAuth(client_id=os.environ['SPOTIFY_CLI
                                                redirect_uri=os.environ['SPOTIFY_REDIRECT_URI'],
                                                scope=scope))
 
-playlist_cities = {"Adelaide": '5FsF0m0y3J8DT9t5APliQH', 'Melbourne': '4ctDUQ505YnGNoj21yYpxI',
-                   'Brisbane': '3PjTtXAvsLe3C59USzfkni', 'Sydney': '1Shh4ljWPQrcsvpTKtppm5'}
 
 logging.basicConfig(level=logging.INFO)
+
 
 def generate_playlist_for_city(city):
     """
@@ -41,14 +43,14 @@ def generate_playlist_for_city(city):
     :return: None
     """
     try:
-        playlist_id = playlist_cities[city]
+        playlist_id = helper.city_to_playlist[city]
     except KeyError:
         logging.error(f"Sorry, there is no playlist for {city}.")
         return
 
     logging.info(f"RUNNING: {city}")
     logging.info("Getting upcoming bands..")
-    dfbands = scrapebands.get_bands(city=city,num_weeks=12)
+    dfbands = tools.get_bands(city=city,num_weeks=12)
     all_bands = list(dfbands['band_name'].str.title())
     logging.info("Here is the dataframe of bands to be added...")
     logging.info(dfbands)
