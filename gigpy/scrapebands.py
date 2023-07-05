@@ -12,12 +12,15 @@ cityid = {'Brisbane':2174003,
           'Sydney':2147714,
           'Adelaide':2078025}
 
-def generate_urls_for_next_nweeks(city,num_weeks):
+def generate_urls_for_next_nweeks(city, num_weeks):
     """
-    To get around BandsInTown display, break into n_week blocks and concat.
-    Definitely hacky.
+    Generate URLs for the upcoming n weeks to scrape BandsInTown data.
 
+    :param city: A string representing the city name
+    :param num_weeks: An integer representing the number of weeks
+    :return: A list of Strings where each string is a URL for a given week
     """
+    
     current_date = datetime.now()
     nthblock = 0
     lists  = []
@@ -41,10 +44,12 @@ def generate_urls_for_next_nweeks(city,num_weeks):
 MATCH_ALL = r'.*'
 def like(string):
     """
-    Return a compiled regular expression that matches the given
-    string with any prefix and postfix, e.g. if string = "hello",
-    the returned regex matches r".*hello.*"
+    Construct a compiled regular expression for the given string
+
+    :param string: A string to construct regex from
+    :return: A compiled regular expression instance
     """
+
     string_ = string
     if not isinstance(string_, str):
         string_ = str(string_)
@@ -54,30 +59,29 @@ def like(string):
 
 def find_by_text(soup, text, tag, **kwargs):
     """
-    Find the tag in soup that matches all provided kwargs, and contains the
-    text.
+    Find the tag in soup that matches all provided kwargs, and contains the text
 
-    If no match is found, return None.
-    If more than one match is found, raise ValueError.
+    :param soup: BeautifulSoup instance
+    :param text: Text to look for within tag
+    :param tag: HTML tag type to search (e.g. div, a)
+    :param kwargs: Additional arguments to filter on the tag
+    :return: List of matching tags
     """
-    elements = soup.find_all(tag, **kwargs)
+
     matches = []
-    for element in elements:
+    for element in soup.find_all(tag, **kwargs):
         if element.find(text=like(text)):
             matches.append(element)
     return matches
-    #if len(matches) > 1:
-    #    raise ValueError("Too many matches:\n" + "\n".join(matches))
-    #elif len(matches) == 0:
-    #    return None
-    #else:
-    #    return matches[0]
 
 def parse_band(band):
     """
-    Get the band info from the soup.
+    Extract band information from the HTML tag
+
+    :param band: Soup tag containing band information
+    :return: A dictionary containing band's name, venue, datetime and number of interested people
     """
-    #print(band)
+
     search_item = band.find_all("div")[2].find_all("div")
     info = {}
     info['band_name'] = search_item[1].text
@@ -86,10 +90,15 @@ def parse_band(band):
     info['num_interested'] = search_item[5].text
     return info
 
-def get_bands(city,num_weeks):
+def get_bands(city, num_weeks):
     """
-    Iterate through the bands and update.
+    Scrape BandsInTown data for the upcoming n weeks and generate a dataframe
+
+    :param city: A string representing the city name
+    :param num_weeks: An integer representing the number of weeks
+    :return: A Pandas DataFrame containing the scraped data for each band
     """
+
     urls = generate_urls_for_next_nweeks(city=city,num_weeks=num_weeks)
     header = {
       "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.75 Safari/537.36",
@@ -99,14 +108,9 @@ def get_bands(city,num_weeks):
     for urli in urls:
         r = requests.get(urli, headers=header)
         soup = BeautifulSoup(r.text,features="lxml")
-        print(urli)
-        # note this app only finds evening gigs! (the majority)
+        logging.info(urli)
         bands = find_by_text(soup," PM","a")
-        bandinfo = []
-        #print(bands)
-        for band in bands:
-            bandinfo.append(parse_band(band))
-        dfi = pd.DataFrame(bandinfo)
-        dfis.append(dfi)
+        bandinfo = [parse_band(band) for band in bands]
+        dfis.append(pd.DataFrame(bandinfo))
+    return pd.concat(dfis).drop_duplicates(['band_name'])
 
-    return pd.concat(dfis,ignore_index=True).drop_duplicates(['band_name'])

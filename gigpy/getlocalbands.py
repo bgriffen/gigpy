@@ -1,11 +1,11 @@
 import requests
 import bs4
-#import spotify
-import sys
-import threading
-import numpy as np
+import spotipy
+import os
+import logging
 import scrapebands
 import collections
+from spotipy.oauth2 import SpotifyOAuth
 
 """
 Contact: Brendan Griffen brendan.f.griffen@gmail.com @brendangriffen
@@ -21,10 +21,6 @@ Enjoy the tunes!
 
 """
 
-import spotipy
-from spotipy.oauth2 import SpotifyOAuth
-import os
-
 scope = "playlist-modify-public"
 
 sp = spotipy.Spotify(auth_manager=SpotifyOAuth(client_id=os.environ['SPOTIFY_CLIENT_ID'],
@@ -32,84 +28,105 @@ sp = spotipy.Spotify(auth_manager=SpotifyOAuth(client_id=os.environ['SPOTIFY_CLI
                                                redirect_uri=os.environ['SPOTIFY_REDIRECT_URI'],
                                                scope=scope))
 
-# EDIT YOUR PLAYLIST IDS BELOW
+playlist_cities = {"Adelaide": '5FsF0m0y3J8DT9t5APliQH', 'Melbourne': '4ctDUQ505YnGNoj21yYpxI',
+                   'Brisbane': '3PjTtXAvsLe3C59USzfkni', 'Sydney': '1Shh4ljWPQrcsvpTKtppm5'}
 
-playlist_cities = {}
-playlist_cities["Adelaide"] = 'playlist_id'
-playlist_cities['Melbourne'] = 'playlist_id'
-playlist_cities['Brisbane'] = 'playlist_id'
-playlist_cities['Sydney'] = 'playlist_id'
-
-#playlists = sp.user_playlists(os.environ['SPOTIFY_USER_ID'])
-#for item in playlists['items']:
-#    print(item['name'],item['uri'])
+logging.basicConfig(level=logging.INFO)
 
 def generate_playlist_for_city(city):
-    playlist_id = playlist_cities[city]
-    print("RUNNING:",city)
-    # get bands in the coming 3 months weeks
-    print("Getting upcoming bands..")
+    """
+    Generate a Spotify playlist for a given city
+
+    :param city: A String representing the city name
+    :return: None
+    """
+    try:
+        playlist_id = playlist_cities[city]
+    except KeyError:
+        logging.error(f"Sorry, there is no playlist for {city}.")
+        return
+
+    logging.info(f"RUNNING: {city}")
+    logging.info("Getting upcoming bands..")
     dfbands = scrapebands.get_bands(city=city,num_weeks=12)
     all_bands = list(dfbands['band_name'].str.title())
+    logging.info("Here is the dataframe of bands to be added...")
+    logging.info(dfbands)
 
-    print("Here is the dataframe of bands to be added...")
-    print(dfbands)
+    logging.info("Clearing current tracks...")
+    remove_and_add_tracks(playlist_id, all_bands)
+    logging.info("Adding bands to playlists...")
+    for band in all_bands:
+        add_playlists_for_band(band, playlist_id)
 
-    print("Clearing current tracks...")
+
+def remove_and_add_tracks(playlist_id, all_bands):
+    """
+    Removes existing tracks and adds new ones to the playlist
+
+    :param playlist_id: A string representing the Spotify playlist ID
+    :param all_bands: A list of band names
+    :return: None
+    """
     current_tracks = sp.user_playlist(os.environ['SPOTIFY_USER_ID'], playlist_id=playlist_id)['tracks']
     remove_tracks = [item['track']['uri'] for item in current_tracks['items']]
-    while len(remove_tracks)>0:
+    while remove_tracks:
+        logging.info(f"Removing {len(remove_tracks)} tracks...")
         current_tracks = sp.user_playlist(os.environ['SPOTIFY_USER_ID'], playlist_id=playlist_id)['tracks']
         remove_tracks = [item['track']['uri'] for item in current_tracks['items']]
-        if len(remove_tracks)>0:
+        if remove_tracks:
             sp.user_playlist_remove_all_occurrences_of_tracks(os.environ['SPOTIFY_USER_ID'],
                                                           playlist_id=playlist_id,
                                                           tracks=remove_tracks)
 
-    for band in all_bands:
-        add_playlists_for_band(band,playlist_id)
 
-def add_playlists_for_band(band,playlist_id):
-    print("Trying",band)
+def add_playlists_for_band(band, playlist_id):
+    """
+    Finds an artist's songs and adds them to a Spotify playlist
+
+    :param band: A string representing the band name
+    :param playlist_id: A string representing the Spotify playlist ID
+    :return: None
+    """
+    logging.info(f"Trying {band}")
     results = sp.search(q='artist:' + band, type='artist')
     artist = results['artists']['items']
 
-    # if there are artists proceed...
-    if len(artist) == 0:
-        print("> Skipping - not found!")
+    if not artist:
+        logging.error("> Skipping - band not found!")
         return
 
-    # take first artist found
     lz_uri = artist[0]['uri']
-
-    # just get top 2 tracks if available
     top_tracks = sp.artist_top_tracks(lz_uri)['tracks'][:2]
     add_tracks = [track['uri'] for track in top_tracks]
-    add_tracks_names = [track['name'] for track in top_tracks]
 
-    # add those to playlist
-    if len(add_tracks) == 0:
-        print("> Skipping - no tracks!")
+    if not add_tracks:
+        logging.error("> Skipping - no tracks for the band!")
         return
     else:
-        print("      >",add_tracks_names)
+        logging.info(f"Adding tracks for {band}")
         sp.user_playlist_add_tracks(os.environ['SPOTIFY_USER_ID'], playlist_id=playlist_id, tracks=add_tracks)
 
 def cleanup(playlist_id):
-    # remove duplicates
+    """
+    Function to clean up the playlist by removing duplicate tracks and re-adding them back singly
+
+    :param playlist_id: String, the Spotify Playlist ID
+    :return: None
+    """
     current_tracks = sp.user_playlist(os.environ['SPOTIFY_USER_ID'], playlist_id=playlist_id)['tracks']
     track_list = [item['track']['uri'] for item in current_tracks['items']]
-    duplicate_tracks = list(set([x for x in track_list if track_list.count(x) > 1]))
-    if len(duplicate_tracks)>0:
+    duplicate_tracks = [x for x in track_list if track_list.count(x) > 1]
+
+    if duplicate_tracks:
         sp.user_playlist_remove_all_occurrences_of_tracks(os.environ['SPOTIFY_USER_ID'],
                                                       playlist_id=playlist_id,
                                                       tracks=duplicate_tracks)
-        # add them back singularly
         sp.user_playlist_add_tracks(os.environ['SPOTIFY_USER_ID'], playlist_id=playlist_id, tracks=duplicate_tracks)
 
-
-generate_playlist_for_city("Brisbane")
-generate_playlist_for_city("Melbourne")
-generate_playlist_for_city("Sydney")
-generate_playlist_for_city("Adelaide")
-#cleanup()
+if __name__ == "__main__":
+    generate_playlist_for_city("Brisbane")
+    generate_playlist_for_city("Melbourne")
+    generate_playlist_for_city("Sydney")
+    generate_playlist_for_city("Adelaide")
+    #cleanup(playlist_id)
