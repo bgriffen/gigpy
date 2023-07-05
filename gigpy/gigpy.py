@@ -2,12 +2,12 @@ import requests
 import bs4
 import spotipy
 import os
-import logging
-import tools
 import collections
 from spotipy.oauth2 import SpotifyOAuth
 import yaml
 import logging
+
+from . import tools
 from . import helper
 
 """
