@@ -1,4 +1,4 @@
-🇦🇺🎵 GigPy - Live Music Near Me
+🎵 Gigpy
 =================
 
 ![Gigpy](screenshots/logo.png "Gigpy")
