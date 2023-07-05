@@ -5,12 +5,7 @@ import re
 import requests
 from datetime import datetime
 from datetime import datetime,timedelta
-
-# BandzInTown IDs
-cityid = {'Brisbane':2174003,
-          'Melbourne':2158177,
-          'Sydney':2147714,
-          'Adelaide':2078025}
+from . import helper
 
 def generate_urls_for_next_nweeks(city, num_weeks):
     """
@@ -20,7 +15,7 @@ def generate_urls_for_next_nweeks(city, num_weeks):
     :param num_weeks: An integer representing the number of weeks
     :return: A list of Strings where each string is a URL for a given week
     """
-    
+
     current_date = datetime.now()
     nthblock = 0
     lists  = []
@@ -30,7 +25,7 @@ def generate_urls_for_next_nweeks(city, num_weeks):
         laterdate = Updated_date.date().isoformat()
 
         listi = ["https://www.bandsintown.com/choose-dates/genre/all-genres",
-                "?city_id=","%s"%cityid[city],
+                "?city_id=","%s"%helper.city_to_id[city],
                 "&date_filter=This+Week&calendarTrigger=false",
                 "&date=",current_block,
                 "T14%3A00%3A00%2C",laterdate,

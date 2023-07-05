@@ -8,7 +8,7 @@ import collections
 from spotipy.oauth2 import SpotifyOAuth
 import yaml
 import logging
-import helper
+from . import helper
 
 """
 Contact: Brendan Griffen brendan.f.griffen@gmail.com @brendangriffen
@@ -60,7 +60,6 @@ def generate_playlist_for_city(city):
     logging.info("Adding bands to playlists...")
     for band in all_bands:
         add_playlists_for_band(band, playlist_id)
-
 
 def remove_and_add_tracks(playlist_id, all_bands):
     """

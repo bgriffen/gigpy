@@ -44,7 +44,7 @@ export SPOTIFY_USER_ID='SPOTIFY_USER_ID'
 Getting Started
 ======
 
-Once you have made the correct modifications, in `getlocalbands.py` and added those environment variables, you need to ensure your cities are in the `cities.yaml` file. You can obtain the city ID by going to [bandsintown.com](https://www.bandsintown.com/this-week/genre/all-genres) and checking the URL for the the `city_id=2158177` tag.
+You then need to ensure your cities are in the `cities.yaml` file. You can obtain the city ID by going to [bandsintown.com](https://www.bandsintown.com/this-week/genre/all-genres) and checking the URL for the the `city_id=2158177` tag.
 
 ```yaml
 # cities.yaml
@@ -65,4 +65,9 @@ Ideally you run this in concept, not in actuality as it just duplicates what is 
 
 Tested on Mac OS X 13.2.1 Ventura with Python 3.8. This should work on other
 platforms, however.
+
+Licence
+=======
+
+This project is licensed under the MIT License. See LICENSE for details.
 
