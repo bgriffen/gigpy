@@ -58,8 +58,8 @@ You then need to ensure your cities are in the `cities.yaml` file. You can obtai
 # cities.yaml
 cities:
   - name: Brisbane
-    id: 2174003                      # from bandsintown.com URL
-    playlist: "3PjTtXAvsLe3C59Uabcd" # change to your own playlist
+    id: 2174003                      # get ID from bandsintown.com URL
+    playlist: "3PjTtXAvsLe3C59Uabcd" # change to your own spotify playlist
 ```
 
 Then you can run:
