@@ -29,7 +29,7 @@ Installation
 Clone the repository:
 
 ```bash
-git clone https://github.com/bgriffen/bandscraper.git
+git clone https://github.com/bgriffen/gigpy.git
 ```
 
 Change directory into the cloned repository:
