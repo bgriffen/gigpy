@@ -1,6 +1,3 @@
-🎵 Gigpy
-=================
-
 ![Gigpy](screenshots/banner.png "Gigpy")
 
 Click on any of the following:
