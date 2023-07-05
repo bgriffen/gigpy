@@ -1,6 +1,8 @@
 🇦🇺🎵 GigPy - Live Music Near Me
 =================
 
+![Gigpy](screenshots/logo.png "Gigpy")
+
 Click on any of the following:
 
 <table>
@@ -17,12 +19,12 @@ Click on any of the following:
 About
 =====
 
-I wanted a way to get more live music outside of The AlgorithmTM echo chamber. This is the result.
-
 This code updates playlists in Spotify based on upcoming music found in your local area.
 The data source is [Bands In Town](https://www.bandsintown.com/). It should capture most bands, but maybe not all. If there is ambiguity over a band name for instance, it may mistakenly put the wrong band in the playlist -- sorry about that.
 
-It should be rare and so the overwhelming majority are bands playing LIVE near you soon. Enjoy =)
+It should be rare and so the overwhelming majority are bands playing LIVE near you soon.
+
+Enjoy =)
 
 Requirements
 ============
@@ -42,10 +44,21 @@ export SPOTIFY_USER_ID='SPOTIFY_USER_ID'
 Running
 ======
 
-Once you have made the correct modifications, in `getlocalbands.py` and added those environment variables, you can just run:
+Once you have made the correct modifications, in `getlocalbands.py` and added those environment variables, you need to ensure your cities are in the `cities.yaml` file. You can obtain the city ID by going to [bandsintown.com](https://www.bandsintown.com/this-week/genre/all-genres) and checking the URL for the the `city_id=2158177` tag.
+
+```yaml
+# cities.yaml
+cities:
+  - name: Brisbane
+    id: 2174003                      # from bandsintown.com URL
+    playlist: "3PjTtXAvsLe3C59Uabcd" # change to your own playlist
+```
+
+Then you can run:
 
 ```Python
-python getlocalbands.py
+import gigpy
+gigpy.generate_playlists_for_city("Brisbane")
 ```
 
 Ideally you run this in concept, not in actuality as it just duplicates what is already available. =)
