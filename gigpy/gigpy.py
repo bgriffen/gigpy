@@ -11,7 +11,7 @@ from . import tools
 from . import helper
 
 """
-Contact: Brendan Griffen brendan.f.griffen@gmail.com @brendangriffen
+Contact: Brendan Griffen @brendangriffen
 
 Code will scrape bands playing in next few months in various cities.
 
@@ -50,7 +50,7 @@ def generate_playlist_for_city(city):
 
     logging.info(f"RUNNING: {city}")
     logging.info("Getting upcoming bands..")
-    dfbands = tools.get_bands(city=city,num_weeks=12)
+    dfbands = tools.get_bands(city=city, num_weeks=12, window_size=3)
     all_bands = list(dfbands['band_name'].str.title())
     logging.info("Here is the dataframe of bands to be added...")
     logging.info(dfbands)
@@ -89,7 +89,6 @@ def add_playlists_for_band(band, playlist_id):
     :param playlist_id: A string representing the Spotify playlist ID
     :return: None
     """
-    logging.info(f"Trying {band}")
     results = sp.search(q='artist:' + band, type='artist')
     artist = results['artists']['items']
 
