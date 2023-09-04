@@ -5,37 +5,38 @@ import re
 import requests
 from datetime import datetime
 from datetime import datetime,timedelta
-from . import helper
+import helper
 import logging
 
-def generate_urls_for_next_period(city, num_weeks):
+
+def generate_urls_for_next_period(city, num_weeks, window_size):
     """
     Generate URLs for the upcoming n weeks to scrape BandsInTown data.
 
     :param city: A string representing the city name
     :param num_weeks: An integer representing the number of weeks
+    :param window_size: An integer representing the number of days in window
     :return: A list of Strings where each string is a URL for a given week
     """
+    base_url = "https://www.bandsintown.com/choose-dates/genre/all-genres"
+    city_id = helper.city_to_id[city]
 
     current_date = datetime.now()
-    nthblock = 0
-    lists  = []
-    while nthblock < num_weeks:
-        current_block = current_date.date().isoformat()
-        Updated_date = current_date+ timedelta(days=2)
-        laterdate = Updated_date.date().isoformat()
+    end_date = current_date + timedelta(weeks=num_weeks)
 
-        listi = ["https://www.bandsintown.com/choose-dates/genre/all-genres",
-                "?city_id=","%s"%helper.city_to_id[city],
-                "&date_filter=This+Week&calendarTrigger=false",
-                "&date=",current_block,
-                "T14%3A00%3A00%2C",laterdate,
-                "T23%3A59%3A59&date_filter=This+Week"]
-        lists.append("".join(listi))
-        current_date = Updated_date
-        nthblock +=1
+    urls = []
 
-    return lists
+    while current_date < end_date:
+        start_date_block = current_date.date()
+        end_date_block = (current_date + timedelta(days=window_size)).date()
+
+        url = f"{base_url}?city_id={city_id}&date={start_date_block.isoformat()}T00:00:00,{end_date_block.isoformat()}T23:59:59&date_filter=This+Week"
+        print(url)
+        urls.append(url)
+
+        current_date = current_date + timedelta(days=window_size)
+
+    return urls
 
 MATCH_ALL = r'.*'
 def like(string):
@@ -86,16 +87,17 @@ def parse_band(band):
     info['num_interested'] = search_item[5].text
     return info
 
-def get_bands(city, num_weeks):
+def get_bands(city, num_weeks, window_size):
     """
     Scrape BandsInTown data for the upcoming n weeks and generate a dataframe
 
     :param city: A string representing the city name
     :param num_weeks: An integer representing the number of weeks
+    :param window_size: An integer representing numer of days in a window
     :return: A Pandas DataFrame containing the scraped data for each band
     """
 
-    urls = generate_urls_for_next_period(city=city,num_weeks=num_weeks)
+    urls = generate_urls_for_next_period(city=city,num_weeks=num_weeks,window_size=window_size)
     header = {
       "User-Agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.75 Safari/537.36",
       "X-Requested-With": "XMLHttpRequest"
