@@ -7,8 +7,8 @@ from spotipy.oauth2 import SpotifyOAuth
 import yaml
 import logging
 
-from . import tools
-from . import helper
+import tools
+import helper
 
 """
 Contact: Brendan Griffen @brendangriffen
@@ -76,10 +76,10 @@ def remove_and_add_tracks(playlist_id, all_bands):
         current_tracks = sp.user_playlist(os.environ['SPOTIFY_USER_ID'], playlist_id=playlist_id)['tracks']
         remove_tracks = [item['track']['uri'] for item in current_tracks['items']]
         if remove_tracks:
+            print(remove_tracks)
             sp.user_playlist_remove_all_occurrences_of_tracks(os.environ['SPOTIFY_USER_ID'],
                                                           playlist_id=playlist_id,
                                                           tracks=remove_tracks)
-
 
 def add_playlists_for_band(band, playlist_id):
     """
@@ -125,8 +125,8 @@ def cleanup(playlist_id):
         sp.user_playlist_add_tracks(os.environ['SPOTIFY_USER_ID'], playlist_id=playlist_id, tracks=duplicate_tracks)
 
 if __name__ == "__main__":
-    generate_playlist_for_city("Brisbane")
-    generate_playlist_for_city("Melbourne")
-    generate_playlist_for_city("Sydney")
+    #generate_playlist_for_city("Brisbane")
+    #generate_playlist_for_city("Melbourne")
+    #generate_playlist_for_city("Sydney")
     generate_playlist_for_city("Adelaide")
     #cleanup(playlist_id)
